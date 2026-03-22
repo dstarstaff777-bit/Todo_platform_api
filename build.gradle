@@ -36,12 +36,17 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
     implementation 'org.flywaydb:flyway-core'
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
     implementation"io.jsonwebtoken:jjwt-api:0.12.6"
-
-
-    runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly   'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly   'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    runtimeOnly 'org.postgresql:postgresql'
 
 	compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
