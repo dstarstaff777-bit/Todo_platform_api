@@ -24,9 +24,8 @@ public class RefreshTokenService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    // Создать новый refresh token
     public RefreshToken createRefreshToken(User user) {
-        // Удаляем старые токены пользователя
+
         refreshTokenRepository.deleteAllByUser(user);
 
         RefreshToken refreshToken = new RefreshToken(
@@ -38,7 +37,6 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
-    // Найти и проверить refresh token
     @Transactional(readOnly = true)
     public RefreshToken verifyRefreshToken(String token) {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
@@ -52,7 +50,7 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
-    // Удалить токен (логаут)
+
     public void deleteByUser(User user) {
         refreshTokenRepository.deleteAllByUser(user);
     }

@@ -79,11 +79,9 @@ public class AuthService {
 
     @Transactional
     public TokenResponse refresh(String refreshTokenValue) {
-        // Проверяем refresh token
         RefreshToken refreshToken = refreshTokenService.verifyRefreshToken(refreshTokenValue);
         User user = refreshToken.getUser();
 
-        // Создаём новый AuthUser
         AuthUser authUser = new AuthUser(
                 user.getId(),
                 user.getEmail(),
@@ -91,8 +89,6 @@ public class AuthService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );
 
-        // Генерируем новый access token
-        // Refresh token остаётся прежним
         String newAccessToken = jwtService.generateToken(authUser);
 
         return new TokenResponse(

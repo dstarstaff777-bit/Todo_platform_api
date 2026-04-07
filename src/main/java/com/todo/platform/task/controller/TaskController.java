@@ -38,7 +38,6 @@ public class TaskController {
         return service.getMyTasks(status, query, pageable).map(TaskResponse::from);
     }
 
-    // Просроченные задачи
     @GetMapping("/overdue")
     public Page<TaskResponse> overdue(
             @PageableDefault(size = 20, sort = "dueDate") Pageable pageable
@@ -46,7 +45,6 @@ public class TaskController {
         return service.getOverdueTasks(pageable).map(TaskResponse::from);
     }
 
-    // Задачи с дедлайном скоро (по умолчанию 24 часа)
     @GetMapping("/due-soon")
     public Page<TaskResponse> dueSoon(
             @RequestParam(defaultValue = "24") int hours,

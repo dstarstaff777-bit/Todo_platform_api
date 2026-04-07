@@ -21,7 +21,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Page<Task> findByOwnerAndStatus(User owner, TaskStatus status, Pageable pageable);
 
-    // Просроченные задачи
     @Query("""
         SELECT t FROM Task t
         WHERE t.owner = :owner
@@ -35,7 +34,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             Pageable pageable
     );
 
-    // Задачи с дедлайном в ближайшие N часов
     @Query("""
         SELECT t FROM Task t
         WHERE t.owner = :owner

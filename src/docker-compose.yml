@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
 
-  # ====== PostgreSQL ======
   postgres:
     image: postgres:16-alpine
     container_name: todo-postgres
@@ -23,7 +22,6 @@ services:
     networks:
       - todo-network
 
-  # ====== Spring Boot App ======
   app:
     build:
       context: .
@@ -33,20 +31,19 @@ services:
     ports:
       - "8080:8080"
     environment:
-      # Database
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-postgres}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-platform}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      # JPA
+
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_JPA_SHOW_SQL: false
-      # Flyway
+
       SPRING_FLYWAY_ENABLED: true
       SPRING_FLYWAY_LOCATIONS: classpath:db/migration
-      # JWT
+
       JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production-min-32-chars}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-1800000}
-      # Server
+
       SERVER_PORT: 8080
     depends_on:
       postgres:

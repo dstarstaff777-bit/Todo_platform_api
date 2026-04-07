@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/platform
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -29,3 +29,13 @@ jwt:
 server:
   port: 8080
   shutdown: graceful
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level %msg%n"
+    file: "%d{HH:mm:ss.SSS} %-5level %msg%n"
+  level:
+    root: INFO
+    com.yourpackage: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: WARN

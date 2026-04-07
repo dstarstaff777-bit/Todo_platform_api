@@ -20,7 +20,6 @@ public class CacheConfig {
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-        // Базовая конфигурация
         RedisCacheConfiguration defaultConfig = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
@@ -33,15 +32,11 @@ public class CacheConfig {
                                 .fromSerializer(new GenericJackson2JsonRedisSerializer())
                 )
                 .disableCachingNullValues();
-
-        // Разное TTL для разных кэшей
         Map<String, RedisCacheConfiguration> cacheConfigs = new HashMap<>();
 
-        // Профиль пользователя - кэш на 30 минут
         cacheConfigs.put("userProfile",
                 defaultConfig.entryTtl(Duration.ofMinutes(30)));
 
-        // Задачи - кэш на 5 минут
         cacheConfigs.put("tasks",
                 defaultConfig.entryTtl(Duration.ofMinutes(5)));
 

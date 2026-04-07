@@ -5,7 +5,6 @@ public record TokenResponse(
         String refreshToken,
         long expiresIn  // в секундах
 ) {
-    // Для обратной совместимости если где-то используется старый вариант
     public String token() {
         return accessToken;
     }

@@ -59,13 +59,11 @@ public class TaskService {
         return repository.findByOwner(user, pageable);
     }
 
-    // Просроченные задачи
     public Page<Task> getOverdueTasks(Pageable pageable) {
         User user = userService.getCurrentUser();
         return repository.findOverdue(user, LocalDateTime.now(), pageable);
     }
 
-    // Задачи с дедлайном в ближайшие N часов (по умолчанию 24)
     public Page<Task> getDueSoonTasks(int hours, Pageable pageable) {
         User user = userService.getCurrentUser();
         LocalDateTime now = LocalDateTime.now();

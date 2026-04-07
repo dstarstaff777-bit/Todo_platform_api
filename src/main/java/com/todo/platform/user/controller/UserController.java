@@ -16,13 +16,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Получить профиль текущего пользователя
     @GetMapping("/me")
     public UserResponse getProfile() {
         return UserResponse.from(userService.getCurrentUser());
     }
 
-    // Обновить профиль
     @PatchMapping("/me")
     public UserResponse updateProfile(@RequestBody @Valid UpdateProfileRequest request) {
         return UserResponse.from(userService.updateProfile(request));
