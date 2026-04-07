@@ -59,7 +59,6 @@ class AuthServiceTest {
         testUser = new User("test@example.com", "testuser", "$2a$10$hashedpassword");
     }
 
-    // ==================== LOGIN ====================
 
     @Test
     @DisplayName("Логин - успешно")
@@ -72,10 +71,9 @@ class AuthServiceTest {
                 .thenReturn(true);
         when(jwtService.generateToken(testAuthUser)).thenReturn("jwt.token.here");
 
-        // when
+
         TokenResponse result = authService.login(request);
 
-        // then
         assertThat(result).isNotNull();
         assertThat(result.token()).isEqualTo("jwt.token.here");
     }
@@ -83,26 +81,25 @@ class AuthServiceTest {
     @Test
     @DisplayName("Логин - неверный пароль")
     void login_ShouldThrow_WhenWrongPassword() {
-        // given
+
         LoginRequest request = new LoginRequest("test@example.com", "wrongpassword");
         when(userDetailsService.loadUserByUsername("test@example.com"))
                 .thenReturn(testAuthUser);
         when(passwordEncoder.matches("wrongpassword", testAuthUser.getPassword()))
                 .thenReturn(false);
 
-        // when & then
+
         assertThatThrownBy(() -> authService.login(request))
                 .isInstanceOf(BadCredentialsException.class);
 
         verify(jwtService, never()).generateToken(any());
     }
 
-    // ==================== REGISTER ====================
 
     @Test
     @DisplayName("Регистрация - успешно")
     void register_ShouldReturnToken_WhenNewUser() {
-        // given
+
         RegisterRequest request = new RegisterRequest(
                 "newuser@example.com", "newuser", "password123"
         );
@@ -113,10 +110,8 @@ class AuthServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(testUser);
         when(jwtService.generateToken(any(AuthUser.class))).thenReturn("jwt.token.here");
 
-        // when
         TokenResponse result = authService.register(request);
 
-        // then
         assertThat(result).isNotNull();
         assertThat(result.token()).isEqualTo("jwt.token.here");
         verify(userRepository).save(any(User.class));
@@ -126,14 +121,13 @@ class AuthServiceTest {
     @Test
     @DisplayName("Регистрация - email уже занят")
     void register_ShouldThrow_WhenEmailAlreadyExists() {
-        // given
+
         RegisterRequest request = new RegisterRequest(
                 "test@example.com", "testuser", "password123"
         );
         when(userRepository.findByEmail("test@example.com"))
                 .thenReturn(Optional.of(testUser));
 
-        // when & then
         assertThatThrownBy(() -> authService.register(request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("already exists");
@@ -145,7 +139,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("Регистрация - пароль хешируется")
     void register_ShouldEncodePassword_BeforeSaving() {
-        // given
+
         RegisterRequest request = new RegisterRequest(
                 "new@example.com", "newuser", "plainpassword"
         );
@@ -154,10 +148,8 @@ class AuthServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(testUser);
         when(jwtService.generateToken(any())).thenReturn("token");
 
-        // when
         authService.register(request);
 
-        // then
         verify(passwordEncoder).encode("plainpassword");
         verify(userRepository).save(argThat(user ->
                 user.getPassword().equals("$2a$10$encoded")
